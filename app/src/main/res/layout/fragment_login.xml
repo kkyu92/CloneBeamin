@@ -6,11 +6,11 @@
 
         <variable
             name="loginViewModel"
-            type="com.clonebeamin.viewmodel.UserLoginViewModel" />
+            type="com.clonebeamin.viewmodel.LoginViewModel" />
 
         <variable
-            name="userDetails"
-            type="com.clonebeamin.model.UserLoginDetails" />
+            name="user"
+            type="com.clonebeamin.model.User" />
 
     </data>
 
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:hint="Mobile number"
-            android:text="@={userDetails.mobileNumber}"
+            android:text="@={user.id}"
             android:inputType="phone"
             android:maxLength="10" />
 
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:hint="Password"
-            android:text="@={userDetails.password}"
+            android:text="@={user.password}"
             android:inputType="textPassword"
             android:maxLength="6" />
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:maxLength="6"
-            android:onClick="@{() -> loginViewModel.doLoginRequest(userDetails)}"
+            android:onClick="@{() -> loginViewModel.makeApiCall(user.id, user.password)}"
             android:text="Login" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

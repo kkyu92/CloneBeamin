@@ -1,28 +1,33 @@
 package com.clonebeamin.view.mypage
 
-import androidx.databinding.library.baseAdapters.BR
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.clonebeamin.R
-import com.clonebeamin.base.BaseFragment
 import com.clonebeamin.databinding.FragmentLoginBinding
-import com.clonebeamin.model.UserLoginDetails
-import com.clonebeamin.viewmodel.UserLoginViewModel
+import com.clonebeamin.viewmodel.LoginViewModel
 
-class LoginFragment : BaseFragment<FragmentLoginBinding, UserLoginViewModel>() {
+class LoginFragment : Fragment() {
+    lateinit var binding: FragmentLoginBinding
+    lateinit var viewModel: LoginViewModel
 
-    override fun getViewModel(): UserLoginViewModel {
-        return ViewModelProvider(this).get(UserLoginViewModel::class.java)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
+        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+
+        return binding.root
     }
 
-    override fun getBindingVariable(): Int = BR.loginViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-
-    override fun init() {
-        mViewDataBinding?.userDetails = UserLoginDetails()
     }
-
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_login
-    }
-
 }
