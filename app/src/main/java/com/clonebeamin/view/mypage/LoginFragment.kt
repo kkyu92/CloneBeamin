@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +13,10 @@ import com.clonebeamin.databinding.FragmentLoginBinding
 import com.clonebeamin.viewmodel.LoginViewModel
 
 class LoginFragment : Fragment() {
+    companion object {
+        private const val TAG = "LoginFragment"
+    }
+
     lateinit var binding: FragmentLoginBinding
     lateinit var viewModel: LoginViewModel
 
@@ -21,13 +26,15 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
-        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+        binding.loginViewModel = viewModel
+        binding.lifecycleOwner = this
 
+        viewModel.message.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let {
+                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+            }
+        })
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
     }
 }

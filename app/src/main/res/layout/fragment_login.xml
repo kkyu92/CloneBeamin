@@ -22,33 +22,51 @@
         tools:context=".view.UserLoginActivity">
 
         <EditText
-            android:id="@+id/mobileNumberEditText"
+            android:id="@+id/id_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Mobile number"
-            android:text="@={user.id}"
-            android:inputType="phone"
-            android:maxLength="10" />
+            android:hint="@string/login_id_hint"
+            android:inputType="textEmailAddress"
+            android:maxLength="15"
+            android:text="@={loginViewModel.id}" />
 
         <EditText
-            android:id="@+id/passwordEditText"
+            android:id="@+id/password_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Password"
-            android:text="@={user.password}"
+            android:hint="@string/login_password_hint"
             android:inputType="textPassword"
-            android:maxLength="6" />
+            android:maxLength="15"
+            android:text="@={loginViewModel.password}" />
+
+        <TextView
+            android:id="@+id/refresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/main"
+            android:text="@={user.refresh}"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/access"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/main"
+            android:text="@={user.access}"
+            android:textStyle="bold" />
 
         <Button
-            android:id="@+id/submitButton"
+            android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:maxLength="6"
-            android:onClick="@{() -> loginViewModel.makeApiCall(user.id, user.password)}"
-            android:text="Login" />
+            android:onClick="@{()->loginViewModel.doLoginRequest()}"
+            android:text="@string/login" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

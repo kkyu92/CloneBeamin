@@ -1,8 +1,8 @@
 package com.clonebeamin.model
 
-data class User (
-    val id: String,
-    val password: String,
-    val refresh: String,
-    val access: String
-)
+class User{
+    var id: String? = null
+    var password: String? = null
+    var refresh: String? = null
+    var access: String? = null
+}
