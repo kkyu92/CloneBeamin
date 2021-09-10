@@ -20,14 +20,10 @@ class MyPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_page, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         binding.moveLogin.setOnClickListener{
             findNavController().navigate(R.id.action_myPageFragment_to_loginFragment)
         }
+        return binding.root
     }
 }

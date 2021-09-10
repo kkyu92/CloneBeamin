@@ -1,14 +1,13 @@
 package com.clonebeamin.viewmodel
 
-import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.clonebeamin.Event
-import com.clonebeamin.common.Common
-import com.clonebeamin.model.request.LoginRequest
-import com.clonebeamin.model.response.LoginResponse
+import com.clonebeamin.data.Event
+import com.clonebeamin.data.login.LoginInfo
+import com.clonebeamin.data.login.LoginDataItem
 import com.clonebeamin.network.ApiService
+import com.clonebeamin.network.RetrofitClient
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -18,14 +17,14 @@ class LoginViewModel : ViewModel() {
         const val TAG = "UserLoginViewModel"
     }
 
-    private val apiService: ApiService = Common.getApiService
+    private val apiService: ApiService = RetrofitClient.getApiService
     private val compositeDisposable = CompositeDisposable()
 
     private val _message = MutableLiveData<Event<String>>()
-    private val _token = MutableLiveData<LoginResponse>()
+    private val _loginData = MutableLiveData<LoginDataItem>()
 
     val message: LiveData<Event<String>> get() = _message
-    val token: LiveData<LoginResponse> get() = _token
+    val loginData: LiveData<LoginDataItem> get() = _loginData
 
     fun doLoginRequest(id: String, password: String) {
         when {
@@ -43,11 +42,11 @@ class LoginViewModel : ViewModel() {
             else -> {
                 compositeDisposable.add(
                     apiService
-                        .login(LoginRequest(id, password))
+                        .login(LoginInfo(id, password))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
-                            _token.postValue(it)
+                            _loginData.postValue(it)
                         }, {
                             it.printStackTrace()
                             _message.postValue(Event("$it"))

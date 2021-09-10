@@ -1,4 +1,4 @@
-package com.clonebeamin
+package com.clonebeamin.data
 
 open class Event<out T>(private val content: T) {
 

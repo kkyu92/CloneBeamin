@@ -8,9 +8,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
+    private const val BASE_URL =
+        "https://r5670326j8.execute-api.ap-northeast-2.amazonaws.com/delivery_server/"
     private var retrofit: Retrofit? = null
 
-    fun getRetrofitClient(baseUrl: String): Retrofit {
+    private fun getRetrofitClient(): Retrofit {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
 
@@ -23,7 +25,7 @@ object RetrofitClient {
 
         if (retrofit == null) {
             retrofit = Retrofit.Builder()
-                .baseUrl(baseUrl)
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient)
@@ -31,4 +33,7 @@ object RetrofitClient {
         }
         return retrofit!!
     }
+
+    val getApiService: ApiService
+        get() = getRetrofitClient().create(ApiService::class.java)
 }

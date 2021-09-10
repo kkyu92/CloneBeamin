@@ -38,21 +38,17 @@ class LoginFragment : Fragment() {
                 Toast.makeText(context, it, Toast.LENGTH_LONG).show()
             }
         })
-        viewModel.token.observe(viewLifecycleOwner, {
+        viewModel.loginData.observe(viewLifecycleOwner, {
             refresh.text = it.refresh
             access.text = it.access
-            findNavController().navigateUp()
+            findNavController().popBackStack()
         })
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        login_button.setOnClickListener{
+        binding.closeBtn.setOnClickListener{
+            findNavController().popBackStack()
+        }
+        binding.loginButton.setOnClickListener{
             viewModel.doLoginRequest(id_input.text.toString(), password_input.text.toString())
         }
-        close_btn.setOnClickListener{
-            findNavController().navigateUp()
-        }
+        return binding.root
     }
 }
