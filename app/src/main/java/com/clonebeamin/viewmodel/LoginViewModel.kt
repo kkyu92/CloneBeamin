@@ -1,13 +1,13 @@
 package com.clonebeamin.viewmodel
 
-import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.clonebeamin.Event
 import com.clonebeamin.common.Common
-import com.clonebeamin.model.User
+import com.clonebeamin.model.request.LoginRequest
+import com.clonebeamin.model.response.LoginResponse
 import com.clonebeamin.network.ApiService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -21,44 +21,40 @@ class LoginViewModel : ViewModel() {
     private val apiService: ApiService = Common.getApiService
     private val compositeDisposable = CompositeDisposable()
 
-    val user: MutableLiveData<User> = MutableLiveData<User>()
-    val id = MutableLiveData<String>()
-    val password = MutableLiveData<String>()
     private val _message = MutableLiveData<Event<String>>()
+    private val _token = MutableLiveData<LoginResponse>()
 
-    val message: LiveData<Event<String>>
-        get() = _message
+    val message: LiveData<Event<String>> get() = _message
+    val token: LiveData<LoginResponse> get() = _token
 
-    init {
-        id.value = ""
-        password.value = ""
-    }
-
-    fun doLoginRequest() {
-        if (id.value.isNullOrBlank()) {
-            _message.value = Event("아이디를 확인해주세요.")
-        } else if (password.value.isNullOrBlank()) {
-            _message.value = Event("비밀번호를 확인해주세요.")
-        } /*else if (!Patterns.EMAIL_ADDRESS.matcher(id.value!!).matches()) {
-            _message.value = Event("이메일형식을 확인해주세요.")
-        }*/ else {
-            compositeDisposable.add(
-                apiService.login(id.value, password.value)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                        { loginModel ->
-                            if (loginModel != null) {
-                                user.value = loginModel
-                                user.value?.id = id.value
-                                user.value?.password = password.value
-                            }
+    fun doLoginRequest(id: String, password: String) {
+        when {
+            // postValue = background 에서 값 변경
+            // setValue = mainThread 에서 값 변경
+            id.isBlank() -> {
+                _message.postValue(Event("아이디를 확인해주세요."))
+            }
+            password.isBlank() -> {
+                _message.postValue(Event("비밀번호를 확인해주세요."))
+            }
+//            !Patterns.EMAIL_ADDRESS.matcher(id).matches() -> {
+//                _message.postValue(Event("이메일형식을 확인해주세요."))
+//            }
+            else -> {
+                compositeDisposable.add(
+                    apiService
+                        .login(LoginRequest(id, password))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            _token.postValue(it)
                         }, {
-                            _message.value = Event("$it")
+                            it.printStackTrace()
+                            _message.postValue(Event("$it"))
                         })
-            )
+                )
+            }
         }
-        Log.e(TAG, "doLoginRequest: [id] ${id.value}\n[pw] ${password.value}")
     }
 
     override fun onCleared() {

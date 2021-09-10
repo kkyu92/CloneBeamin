@@ -2,24 +2,18 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="loginViewModel"
-            type="com.clonebeamin.viewmodel.LoginViewModel" />
-
-        <variable
-            name="user"
-            type="com.clonebeamin.model.User" />
-
-    </data>
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp"
         tools:context=".view.UserLoginActivity">
+
+        <Button
+            android:id="@+id/close_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="close"/>
 
         <EditText
             android:id="@+id/id_input"
@@ -29,7 +23,7 @@
             android:hint="@string/login_id_hint"
             android:inputType="textEmailAddress"
             android:maxLength="15"
-            android:text="@={loginViewModel.id}" />
+            android:text="delivery" />
 
         <EditText
             android:id="@+id/password_input"
@@ -39,7 +33,7 @@
             android:hint="@string/login_password_hint"
             android:inputType="textPassword"
             android:maxLength="15"
-            android:text="@={loginViewModel.password}" />
+            android:text="dev_baemin" />
 
         <TextView
             android:id="@+id/refresh"
@@ -47,7 +41,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textColor="@color/main"
-            android:text="@={user.refresh}"
             android:textStyle="bold" />
 
         <TextView
@@ -56,7 +49,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:textColor="@color/main"
-            android:text="@={user.access}"
             android:textStyle="bold" />
 
         <Button
@@ -65,9 +57,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:maxLength="6"
-            android:onClick="@{()->loginViewModel.doLoginRequest()}"
             android:text="@string/login" />
-
     </androidx.appcompat.widget.LinearLayoutCompat>
-
 </layout>
