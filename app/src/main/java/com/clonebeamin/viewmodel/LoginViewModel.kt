@@ -3,6 +3,7 @@ package com.clonebeamin.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.clonebeamin.base.BaseViewModel
 import com.clonebeamin.data.Event
 import com.clonebeamin.data.login.LoginInfo
 import com.clonebeamin.data.login.LoginDataItem
@@ -12,7 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel : BaseViewModel() {
     companion object {
         const val TAG = "UserLoginViewModel"
     }
@@ -46,10 +47,10 @@ class LoginViewModel : ViewModel() {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe({
-                            _loginData.postValue(it)
+                            _loginData.value = it
                         }, {
                             it.printStackTrace()
-                            _message.postValue(Event("$it"))
+                            _message.value = Event("$it")
                         })
                 )
             }

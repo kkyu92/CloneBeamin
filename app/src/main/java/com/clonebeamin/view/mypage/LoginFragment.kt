@@ -12,11 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.clonebeamin.R
+import com.clonebeamin.base.BaseFragment
 import com.clonebeamin.databinding.FragmentLoginBinding
 import com.clonebeamin.viewmodel.LoginViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login) {
     companion object {
         private const val TAG = "LoginFragment"
     }
@@ -50,5 +51,9 @@ class LoginFragment : Fragment() {
             viewModel.doLoginRequest(id_input.text.toString(), password_input.text.toString())
         }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 }
