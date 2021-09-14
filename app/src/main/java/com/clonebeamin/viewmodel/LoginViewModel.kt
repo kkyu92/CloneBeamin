@@ -2,23 +2,17 @@ package com.clonebeamin.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.clonebeamin.base.BaseViewModel
 import com.clonebeamin.data.Event
-import com.clonebeamin.data.login.LoginInfo
 import com.clonebeamin.data.login.LoginDataItem
+import com.clonebeamin.data.login.LoginInfo
 import com.clonebeamin.network.ApiService
 import com.clonebeamin.network.RetrofitClient
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class LoginViewModel : ViewModel() {
-    companion object {
-        const val TAG = "UserLoginViewModel"
-    }
-
+class LoginViewModel : BaseViewModel() {
     private val apiService: ApiService = RetrofitClient.getApiService
-    private val compositeDisposable = CompositeDisposable()
 
     private val _message = MutableLiveData<Event<String>>()
     private val _loginData = MutableLiveData<LoginDataItem>()
@@ -27,6 +21,7 @@ class LoginViewModel : ViewModel() {
     val loginData: LiveData<LoginDataItem> get() = _loginData
 
     fun doLoginRequest(id: String, password: String) {
+        showProgress()
         when {
             // postValue = background 에서 값 변경
             // setValue = mainThread 에서 값 변경
@@ -54,10 +49,10 @@ class LoginViewModel : ViewModel() {
                 )
             }
         }
+        hideProgress()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        compositeDisposable.clear()
+    companion object {
+        private const val TAG = "LoginViewModel"
     }
 }

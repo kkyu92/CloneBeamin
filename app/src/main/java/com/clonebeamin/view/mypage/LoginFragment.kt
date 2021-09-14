@@ -1,38 +1,19 @@
 package com.clonebeamin.view.mypage
 
-import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.clonebeamin.R
+import com.clonebeamin.base.BaseFragment
 import com.clonebeamin.databinding.FragmentLoginBinding
 import com.clonebeamin.viewmodel.LoginViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class LoginFragment : Fragment() {
-    companion object {
-        private const val TAG = "LoginFragment"
-    }
+class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login) {
+    private lateinit var viewModel: LoginViewModel
 
-    lateinit var binding: FragmentLoginBinding
-    lateinit var viewModel: LoginViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
+    override fun init() {
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
-        binding.lifecycleOwner = this
-
         viewModel.message.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let {
                 Toast.makeText(context, it, Toast.LENGTH_LONG).show()
@@ -43,12 +24,23 @@ class LoginFragment : Fragment() {
             access.text = it.access
             findNavController().popBackStack()
         })
-        binding.closeBtn.setOnClickListener{
+        viewModel.isLoading.observe(viewLifecycleOwner, { isLoading ->
+            if (isLoading) {
+                showToast("isLoading: true")
+            } else {
+                showToast("isLoading: false")
+            }
+        })
+
+        binding.closeBtn.setOnClickListener {
             findNavController().popBackStack()
         }
-        binding.loginButton.setOnClickListener{
+        binding.loginButton.setOnClickListener {
             viewModel.doLoginRequest(id_input.text.toString(), password_input.text.toString())
         }
-        return binding.root
+    }
+
+    companion object {
+        private const val TAG = "LoginFragment"
     }
 }
