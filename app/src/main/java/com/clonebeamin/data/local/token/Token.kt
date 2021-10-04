@@ -5,8 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "token")
-data class LocalTokenItem(
-    @PrimaryKey(autoGenerate = true) val idx: Int = 0,
+data class Token(
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int = 0,
     @ColumnInfo(name = "accessToken") val accessToken: String,
     @ColumnInfo(name = "refreshToken") val refreshToken: String
 )

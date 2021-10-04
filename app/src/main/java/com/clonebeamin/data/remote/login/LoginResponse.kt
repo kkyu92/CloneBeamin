@@ -1,6 +1,6 @@
 package com.clonebeamin.data.remote.login
 
-data class LoginDataItem (
+data class LoginResponse (
     var refresh: String,
     var access: String
 )

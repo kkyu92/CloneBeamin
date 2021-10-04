@@ -32,5 +32,5 @@ object RetrofitClient {
             .build()
     }
 
-    val loginAPI: RetrofitApi by lazy { buildRetrofitClient.create(RetrofitApi::class.java) }
+    val LOGIN_API_SERVICE: ApiService by lazy { buildRetrofitClient.create(ApiService::class.java) }
 }

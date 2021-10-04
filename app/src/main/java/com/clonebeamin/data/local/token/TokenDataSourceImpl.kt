@@ -3,24 +3,25 @@ package com.clonebeamin.data.local.token
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class LocalTokenDataSourceImpl(
-    private val localTokenDao: LocalTokenDao
-) : LocalTokenDataSource {
-    override fun getToken(): Single<LocalTokenItem> {
-        return localTokenDao
+class TokenDataSourceImpl @Inject constructor(
+    private val tokenDao: TokenDao
+) : TokenDataSource {
+    override fun getToken(): Single<Token> {
+        return tokenDao
             .getToken()
             .subscribeOn(Schedulers.io())
     }
 
-    override fun saveToken(tokenItem: LocalTokenItem): Completable {
-        return localTokenDao
-            .saveToken(tokenItem)
+    override fun saveToken(token: Token): Completable {
+        return tokenDao
+            .saveToken(token)
             .subscribeOn(Schedulers.io())
     }
 
     override fun deleteAllCachedToken(): Completable {
-        return localTokenDao
+        return tokenDao
             .deleteAllCachedToken()
             .subscribeOn(Schedulers.io())
     }

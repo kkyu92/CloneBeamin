@@ -1,6 +1,6 @@
 package com.clonebeamin.data.remote.login
 
-data class LoginInfo (
+data class LoginRequest (
     var username: String,
     var password: String
 )

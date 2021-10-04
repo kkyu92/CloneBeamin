@@ -4,21 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.clonebeamin.ui.base.BaseViewModel
 import com.clonebeamin.ui.utill.Event
-import com.clonebeamin.data.remote.login.LoginDataItem
-import com.clonebeamin.data.remote.login.LoginInfo
-import com.clonebeamin.data.remote.retrofit.RetrofitApi
+import com.clonebeamin.data.remote.login.LoginResponse
+import com.clonebeamin.data.remote.login.LoginRequest
+import com.clonebeamin.data.remote.retrofit.ApiService
 import com.clonebeamin.data.remote.retrofit.RetrofitClient
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class LoginViewModel : BaseViewModel() {
-    private val retrofitApi: RetrofitApi = RetrofitClient.loginAPI
+    private val apiService: ApiService = RetrofitClient.LOGIN_API_SERVICE
 
     private val _message = MutableLiveData<Event<String>>()
-    private val _loginData = MutableLiveData<LoginDataItem>()
+    private val _loginData = MutableLiveData<LoginResponse>()
 
     val message: LiveData<Event<String>> get() = _message
-    val loginData: LiveData<LoginDataItem> get() = _loginData
+    val loginData: LiveData<LoginResponse> get() = _loginData
 
     fun doLoginRequest(id: String, password: String) {
         when {
@@ -35,8 +35,8 @@ class LoginViewModel : BaseViewModel() {
 //            }
             else -> {
                 compositeDisposable.add(
-                    retrofitApi
-                        .login(LoginInfo(id, password))
+                    apiService
+                        .login(LoginRequest(id, password))
                         .subscribeOn(Schedulers.io())
                         .doOnSubscribe { showProgress() }
                         .observeOn(AndroidSchedulers.mainThread())

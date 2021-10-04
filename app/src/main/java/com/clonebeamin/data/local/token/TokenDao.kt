@@ -7,12 +7,12 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 @Dao
-interface LocalTokenDao {
+interface TokenDao {
     @Query(value = "SELECT * FROM token LIMIT 1")
-    fun getToken(): Single<LocalTokenItem>
+    fun getToken(): Single<Token>
 
     @Insert
-    fun saveToken(tokenItem: LocalTokenItem): Completable
+    fun saveToken(token: Token): Completable
 
     @Query(value = "DELETE FROM token")
     fun deleteAllCachedToken(): Completable
